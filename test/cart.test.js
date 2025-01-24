@@ -1,4 +1,4 @@
-const { applyTax } = require('../src/cart');
+const { calculateTotalTTC, applyTax } = require('../src/cart');
 
 describe('applyTax', () => {
   
@@ -43,3 +43,32 @@ describe('applyTax', () => {
   });
 
 });
+
+describe('calculateTotalTTC', () => {
+  
+    it('doit calculer le total TTC pour un panier avec plusieurs produits', () => {
+      const panier = [
+        { id: 1, nom: 'Harry Potter', prix: 12.99, catégorie: 'livres', quantité: 2 },
+        { id: 2, nom: 'Inception', prix: 14.99, catégorie: 'dvd', quantité: 1 },
+        { id: 3, nom: 'The Witcher 3', prix: 39.99, catégorie: 'jeux vidéo', quantité: 1 },
+      ];
+      const totalTTC = calculateTotalTTC(panier);
+      expect(totalTTC).toEqual(105.88); 
+    });
+  
+    it('doit calculer le total TTC en fonction des quantités des produits', () => {
+      const panier = [
+        { id: 1, nom: 'Harry Potter', prix: 12.99, catégorie: 'livres', quantité: 3 },
+        { id: 2, nom: 'Inception', prix: 14.99, catégorie: 'dvd', quantité: 2 },
+      ];
+      const totalTTC = calculateTotalTTC(panier);
+      expect(totalTTC).toEqual(88.07); 
+    });
+  
+    it('doit retourner 0 si le panier est vide', () => {
+      const panier = [];
+      const totalTTC = calculateTotalTTC(panier);
+      expect(totalTTC).toEqual(0);
+    });
+  
+  });

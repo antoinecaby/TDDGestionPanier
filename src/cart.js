@@ -14,4 +14,21 @@ function applyTax(product) {
     return parseFloat((product.prix * (1 + taxRate)).toFixed(2));
   }
   
-  module.exports = { applyTax };
+
+function calculateTotalTTC(panier) {
+if (!Array.isArray(panier) || panier.length === 0) {
+    return 0;
+}
+
+return parseFloat(
+    panier
+    .map(item => {
+        const prixTTCUnitaire = applyTax(item);
+        return prixTTCUnitaire * item.quantité;
+    })
+    .reduce((total, prixTTC) => total + prixTTC, 0)
+    .toFixed(2)
+);
+}
+
+module.exports = { applyTax, calculateTotalTTC };
